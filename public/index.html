@@ -23,8 +23,10 @@
         </div>
         <div class="header-actions">
             <div class="stats" id="stats"></div>
-            <a class="btn ghost" id="downloadBtn" href="data/choreography.yaml" download="choreography.yaml">Download
-                YAML</a>
+            <a class="btn ghost" id="downloadBtn" href="api/data.yaml" download="choreography.yaml">Download YAML</a>
+            <button class="btn ghost" id="unlockBtn" type="button" hidden>Edit</button>
+            <button class="btn ghost" id="lockBtn" type="button" hidden>Done</button>
+            <button class="btn primary" id="saveBtn" type="button" hidden>Save</button>
         </div>
     </header>
 
@@ -36,31 +38,58 @@
             <span>Duration</span>
             <span>Status</span>
             <span>Notes</span>
+            <span class="edit-only"></span>
         </div>
         <section id="list" class="list"></section>
+        <button class="btn add edit-only" id="addBtn" type="button">+ Add dance number</button>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <dialog id="unlockDialog" class="dialog">
+        <form method="dialog" id="unlockForm">
+            <h2>Enter edit passcode</h2>
+            <input type="password" id="passcodeInput" autocomplete="current-password" placeholder="Passcode" required />
+            <p class="dialog-error" id="unlockError" hidden>Wrong passcode</p>
+            <menu>
+                <button class="btn ghost" value="cancel" type="button" id="unlockCancel">Cancel</button>
+                <button class="btn primary" type="submit">Unlock</button>
+            </menu>
+        </form>
+    </dialog>
 
     <template id="rowTemplate">
         <article class="row">
             <div class="cell order">
                 <span class="order-num"></span>
+                <div class="order-moves edit-only">
+                    <button type="button" class="move up" title="Move up" aria-label="Move up">▲</button>
+                    <button type="button" class="move down" title="Move down" aria-label="Move down">▼</button>
+                </div>
             </div>
             <div class="cell song">
-                <span class="song-text"></span>
+                <input class="song-input" type="text" placeholder="Song name" readonly />
             </div>
             <div class="cell dancers">
                 <div class="chips"></div>
+                <input class="dancer-input edit-only" type="text" placeholder="+ dancer" />
             </div>
             <div class="cell duration">
-                <span class="duration-text"></span>
+                <input class="duration-input" type="text" placeholder="mm:ss" readonly />
             </div>
             <div class="cell status">
-                <span class="status-pill"></span>
+                <select class="status-select" disabled>
+                    <option value="planned">Planned</option>
+                    <option value="rehearsing">Rehearsing</option>
+                    <option value="ready">Ready</option>
+                </select>
             </div>
             <div class="cell notes">
-                <span class="notes-text"></span>
+                <input class="notes-input" type="text" placeholder="Notes" readonly />
+            </div>
+            <div class="cell actions edit-only">
+                <button type="button" class="icon-btn delete" title="Remove number"
+                    aria-label="Remove number">✕</button>
             </div>
         </article>
     </template>
