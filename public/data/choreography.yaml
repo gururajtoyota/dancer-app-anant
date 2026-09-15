@@ -34,7 +34,7 @@ numbers:
     song: "Megham Karukarado & Selfie Pulla"
     duration: "02:25"
     video: ""
-    status: "planned"
+    status: "rehearsing"
     notes: ""
     dancers:
       - "Ananthu"
@@ -43,8 +43,8 @@ numbers:
     order: 4
     song: "Kattikida"
     duration: "01:25"
-    video: ""
-    status: "planned"
+    video: "https://drive.google.com/file/d/1xSs089cNFA3N079djGADKoeriXpweTm3/view?usp=sharing"
+    status: "rehearsing"
     notes: "Two cousins to be confirmed"
     dancers:
       - "Ananthu"
@@ -76,7 +76,7 @@ numbers:
     song: "Avesham"
     duration: "0:51"
     video: "https://www.instagram.com/reels/DcdskJsvl_4/"
-    status: "ready"
+    status: "rehearsing"
     notes: ""
     dancers:
       - "Anusha"
@@ -92,7 +92,7 @@ numbers:
     song: "Annoda Paatu Beat"
     duration: "0:35"
     video: "https://www.youtube.com/shorts/boDIJMptS1U"
-    status: "ready"
+    status: "rehearsing"
     notes: "Parimala and group - names to be confirmed"
     dancers:
       - "Parimala"
