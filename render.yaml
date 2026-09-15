@@ -3,7 +3,7 @@ services:
     name: dance-view
     runtime: node
     plan: free
-    buildCommand: "echo no build step"
+    buildCommand: npm install
     startCommand: node server.js
     autoDeploy: true
     envVars:

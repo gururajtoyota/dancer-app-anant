@@ -14,6 +14,12 @@ const dialog = document.getElementById('unlockDialog');
 const unlockForm = document.getElementById('unlockForm');
 const passcodeInput = document.getElementById('passcodeInput');
 const unlockError = document.getElementById('unlockError');
+const dancerFilter = document.getElementById('dancerFilter');
+const statusFilter = document.getElementById('statusFilter');
+const clearFilters = document.getElementById('clearFilters');
+const filterCount = document.getElementById('filterCount');
+
+const DANCER_FILTER_KEY = 'dance-view:dancer';
 
 let editing = false;
 let dirty = false;
@@ -223,6 +229,45 @@ function render() {
     state.numbers.forEach((n, i) => frag.appendChild(buildRow(n, i)));
     listEl.appendChild(frag);
     renderStats();
+    renderDancerOptions();
+    applyFilters();
+}
+
+function renderDancerOptions() {
+    const names = [...new Set(state.numbers.flatMap((n) => n.dancers))]
+        .sort((a, b) => a.localeCompare(b));
+    const current = dancerFilter.value;
+
+    dancerFilter.textContent = '';
+    const all = new Option('Everyone', '');
+    dancerFilter.add(all);
+    names.forEach((name) => dancerFilter.add(new Option(name, name.toLowerCase())));
+    dancerFilter.value = names.some((n) => n.toLowerCase() === current) ? current : '';
+}
+
+function applyFilters() {
+    const dancer = dancerFilter.value;
+    const status = statusFilter.value;
+    const active = Boolean(dancer || status);
+    let shown = 0;
+
+    [...listEl.children].forEach((row, i) => {
+        const number = state.numbers[i];
+        const inNumber = !dancer || number.dancers.some((d) => d.toLowerCase() === dancer);
+        const matches = inNumber && (!status || number.status === status);
+        row.hidden = !matches;
+        row.classList.toggle('mine', Boolean(dancer) && matches);
+        if (matches) shown += 1;
+
+        row.querySelectorAll('.chip').forEach((chip, ci) => {
+            chip.classList.toggle('match', Boolean(dancer) && number.dancers[ci].toLowerCase() === dancer);
+        });
+    });
+
+    clearFilters.hidden = !active;
+    filterCount.textContent = active ? `${shown} of ${state.numbers.length} numbers` : '';
+    if (dancer) localStorage.setItem(DANCER_FILTER_KEY, dancer);
+    else localStorage.removeItem(DANCER_FILTER_KEY);
 }
 
 function setEditing(on) {
@@ -233,6 +278,11 @@ function setEditing(on) {
     saveBtn.hidden = !on;
     titleEl.contentEditable = on ? 'true' : 'false';
     subtitleEl.contentEditable = on ? 'true' : 'false';
+    if (on) {
+        // hidden rows would make reordering confusing
+        dancerFilter.value = '';
+        statusFilter.value = '';
+    }
     render();
 }
 
@@ -292,9 +342,22 @@ async function unlock(candidate) {
 async function load() {
     const [configRes, dataRes] = await Promise.all([fetch('api/config'), fetch('api/data')]);
     const config = await configRes.json();
+    const saved = localStorage.getItem(DANCER_FILTER_KEY);
     apply(await dataRes.json());
+    if (saved) {
+        dancerFilter.value = saved;
+        applyFilters();
+    }
     unlockBtn.hidden = !config.editable;
 }
+
+dancerFilter.addEventListener('change', applyFilters);
+statusFilter.addEventListener('change', applyFilters);
+clearFilters.addEventListener('click', () => {
+    dancerFilter.value = '';
+    statusFilter.value = '';
+    applyFilters();
+});
 
 /* ---------- events ---------- */
 

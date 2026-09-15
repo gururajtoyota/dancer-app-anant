@@ -31,6 +31,26 @@
     </header>
 
     <main>
+        <div class="filters" id="filters">
+            <label class="filter">
+                <span>Dancer</span>
+                <select id="dancerFilter">
+                    <option value="">Everyone</option>
+                </select>
+            </label>
+            <label class="filter">
+                <span>Status</span>
+                <select id="statusFilter">
+                    <option value="">Any</option>
+                    <option value="planned">Planned</option>
+                    <option value="rehearsing">Rehearsing</option>
+                    <option value="ready">Ready</option>
+                </select>
+            </label>
+            <button class="btn ghost" id="clearFilters" type="button" hidden>Clear</button>
+            <span class="filter-count" id="filterCount"></span>
+        </div>
+
         <div class="table-head">
             <span>#</span>
             <span>Song</span>
