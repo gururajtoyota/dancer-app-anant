@@ -18,14 +18,13 @@
 
     <header class="page-header">
         <div class="titles">
-            <h1 contenteditable="true" spellcheck="false" id="showTitle">Dance Showcase</h1>
-            <p contenteditable="true" spellcheck="false" id="showSubtitle">Choreography Tracker</p>
+            <h1 id="showTitle">Dance Showcase</h1>
+            <p id="showSubtitle">Choreography Tracker</p>
         </div>
         <div class="header-actions">
             <div class="stats" id="stats"></div>
-            <span class="mode-badge" id="modeBadge" hidden></span>
-            <button class="btn ghost" id="downloadBtn" type="button">Download YAML</button>
-            <button class="btn primary" id="saveBtn" type="button">Save</button>
+            <a class="btn ghost" id="downloadBtn" href="data/choreography.yaml" download="choreography.yaml">Download
+                YAML</a>
         </div>
     </header>
 
@@ -37,10 +36,8 @@
             <span>Duration</span>
             <span>Status</span>
             <span>Notes</span>
-            <span></span>
         </div>
         <section id="list" class="list"></section>
-        <button class="btn add" id="addBtn" type="button">+ Add dance number</button>
     </main>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -49,34 +46,21 @@
         <article class="row">
             <div class="cell order">
                 <span class="order-num"></span>
-                <div class="order-moves">
-                    <button type="button" class="move up" title="Move up" aria-label="Move up">▲</button>
-                    <button type="button" class="move down" title="Move down" aria-label="Move down">▼</button>
-                </div>
             </div>
             <div class="cell song">
-                <input class="song-input" type="text" placeholder="Song name" />
+                <span class="song-text"></span>
             </div>
             <div class="cell dancers">
                 <div class="chips"></div>
-                <input class="dancer-input" type="text" placeholder="+ dancer" />
             </div>
             <div class="cell duration">
-                <input class="duration-input" type="text" inputmode="numeric" placeholder="mm:ss" />
+                <span class="duration-text"></span>
             </div>
             <div class="cell status">
-                <select class="status-select">
-                    <option value="planned">Planned</option>
-                    <option value="rehearsing">Rehearsing</option>
-                    <option value="ready">Ready</option>
-                </select>
+                <span class="status-pill"></span>
             </div>
             <div class="cell notes">
-                <input class="notes-input" type="text" placeholder="Notes" />
-            </div>
-            <div class="cell actions">
-                <button type="button" class="icon-btn delete" title="Remove number"
-                    aria-label="Remove number">✕</button>
+                <span class="notes-text"></span>
             </div>
         </article>
     </template>
