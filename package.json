@@ -1,0 +1,12 @@
+{
+    "name": "dance-view",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Dance choreography tracker backed by a YAML file",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "engines": {
+        "node": ">=18"
+    }
+}

@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: dance-view
+    runtime: static
+    staticPublishPath: ./public
+    pullRequestPreviewsEnabled: false
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
+      - path: /data/*
+        name: Cache-Control
+        value: no-cache
