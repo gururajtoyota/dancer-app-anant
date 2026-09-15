@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dance Showcase · Choreography Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="aurora"></div>
+
+    <header class="page-header">
+        <div class="titles">
+            <h1 contenteditable="true" spellcheck="false" id="showTitle">Dance Showcase</h1>
+            <p contenteditable="true" spellcheck="false" id="showSubtitle">Choreography Tracker</p>
+        </div>
+        <div class="header-actions">
+            <div class="stats" id="stats"></div>
+            <a class="btn ghost" href="/api/data.yaml">Download YAML</a>
+            <button class="btn primary" id="saveBtn" type="button">Save</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="table-head">
+            <span>#</span>
+            <span>Song</span>
+            <span>Dancers</span>
+            <span>Duration</span>
+            <span>Status</span>
+            <span>Notes</span>
+            <span></span>
+        </div>
+        <section id="list" class="list"></section>
+        <button class="btn add" id="addBtn" type="button">+ Add dance number</button>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <template id="rowTemplate">
+        <article class="row">
+            <div class="cell order">
+                <span class="order-num"></span>
+                <div class="order-moves">
+                    <button type="button" class="move up" title="Move up" aria-label="Move up">▲</button>
+                    <button type="button" class="move down" title="Move down" aria-label="Move down">▼</button>
+                </div>
+            </div>
+            <div class="cell song">
+                <input class="song-input" type="text" placeholder="Song name" />
+            </div>
+            <div class="cell dancers">
+                <div class="chips"></div>
+                <input class="dancer-input" type="text" placeholder="+ dancer" />
+            </div>
+            <div class="cell duration">
+                <input class="duration-input" type="text" inputmode="numeric" placeholder="mm:ss" />
+            </div>
+            <div class="cell status">
+                <select class="status-select">
+                    <option value="planned">Planned</option>
+                    <option value="rehearsing">Rehearsing</option>
+                    <option value="ready">Ready</option>
+                </select>
+            </div>
+            <div class="cell notes">
+                <input class="notes-input" type="text" placeholder="—" />
+            </div>
+            <div class="cell actions">
+                <button type="button" class="icon-btn delete" title="Remove number"
+                    aria-label="Remove number">✕</button>
+            </div>
+        </article>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
