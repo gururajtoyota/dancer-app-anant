@@ -23,7 +23,8 @@
         </div>
         <div class="header-actions">
             <div class="stats" id="stats"></div>
-            <a class="btn ghost" href="/api/data.yaml">Download YAML</a>
+            <span class="mode-badge" id="modeBadge" hidden></span>
+            <button class="btn ghost" id="downloadBtn" type="button">Download YAML</button>
             <button class="btn primary" id="saveBtn" type="button">Save</button>
         </div>
     </header>
@@ -80,6 +81,7 @@
         </article>
     </template>
 
+    <script src="yaml.js"></script>
     <script src="app.js"></script>
 </body>
 

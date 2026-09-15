@@ -6,7 +6,10 @@ const titleEl = document.getElementById('showTitle');
 const subtitleEl = document.getElementById('showSubtitle');
 const statsEl = document.getElementById('stats');
 const toastEl = document.getElementById('toast');
+const modeBadge = document.getElementById('modeBadge');
 
+const STORAGE_KEY = 'dance-view:data';
+let mode = 'static';
 let dirty = false;
 let saveTimer = null;
 
@@ -176,8 +179,21 @@ async function save() {
     state.show.title = titleEl.textContent.trim();
     state.show.subtitle = subtitleEl.textContent.trim();
     state.numbers.forEach((n, i) => { n.order = i + 1; });
+
+    if (mode === 'static') {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            dirty = false;
+            saveBtn.dataset.dirty = 'false';
+            toast('Saved in this browser — download the YAML to share it');
+        } catch {
+            toast('Browser storage is full or blocked', true);
+        }
+        return;
+    }
+
     try {
-        const res = await fetch('/api/data', {
+        const res = await fetch('api/data', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(state),
@@ -191,15 +207,79 @@ async function save() {
     }
 }
 
-async function load() {
-    const res = await fetch('/api/data');
-    const data = await res.json();
-    state.show = data.show;
-    state.numbers = data.numbers.sort((a, b) => a.order - b.order);
-    titleEl.textContent = data.show.title;
-    subtitleEl.textContent = data.show.subtitle;
+function normalize(data) {
+    const show = (data && data.show) || {};
+    const numbers = Array.isArray(data && data.numbers) ? data.numbers : [];
+    return {
+        show: {
+            title: show.title || 'Dance Showcase',
+            subtitle: show.subtitle || '',
+        },
+        numbers: numbers.map((n, i) => ({
+            id: n.id || `n${i + 1}`,
+            order: Number(n.order) || i + 1,
+            song: n.song || '',
+            duration: n.duration || '',
+            status: ['planned', 'rehearsing', 'ready'].includes(n.status) ? n.status : 'planned',
+            notes: n.notes || '',
+            dancers: (Array.isArray(n.dancers) ? n.dancers : []).filter(Boolean),
+        })).sort((a, b) => a.order - b.order),
+    };
+}
+
+function apply(data) {
+    const clean = normalize(data);
+    state.show = clean.show;
+    state.numbers = clean.numbers;
+    titleEl.textContent = clean.show.title;
+    subtitleEl.textContent = clean.show.subtitle;
     render();
 }
+
+function setMode(next, label) {
+    mode = next;
+    modeBadge.hidden = false;
+    modeBadge.textContent = label;
+    modeBadge.dataset.mode = next;
+}
+
+async function load() {
+    try {
+        const res = await fetch('api/data');
+        if (res.ok && (res.headers.get('content-type') || '').includes('json')) {
+            setMode('server', 'Saving to YAML file');
+            apply(await res.json());
+            return;
+        }
+    } catch {
+        // no backend — static hosting
+    }
+
+    setMode('static', 'Read-only host · edits saved in browser');
+    const cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) {
+        apply(JSON.parse(cached));
+        return;
+    }
+    const res = await fetch('data/choreography.yaml', { cache: 'no-cache' });
+    apply(MiniYAML.parse(await res.text()));
+}
+
+function download() {
+    state.show.title = titleEl.textContent.trim();
+    state.show.subtitle = subtitleEl.textContent.trim();
+    const blob = new Blob([MiniYAML.dump(normalize(state))], { type: 'text/yaml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'choreography.yaml';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+document.getElementById('downloadBtn').addEventListener('click', download);
 
 [titleEl, subtitleEl].forEach((el) => {
     el.addEventListener('input', markDirty);

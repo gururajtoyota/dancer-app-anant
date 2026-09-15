@@ -95,6 +95,20 @@ h1 {
     font-weight: 600;
 }
 
+.mode-badge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #f1f2f7;
+    color: #7b8194;
+}
+
+.mode-badge[data-mode="server"] {
+    background: #e7f8f1;
+    color: #1f9d73;
+}
+
 /* Buttons */
 .btn {
     border: 1px solid transparent;

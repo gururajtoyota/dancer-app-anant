@@ -4,12 +4,12 @@ const http = require('http');
 const fs = require('fs');
 const fsp = fs.promises;
 const path = require('path');
-const yaml = require('./lib/yaml');
+const yaml = require('./public/yaml');
 
 const PORT = process.env.PORT || 4321;
 const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, 'public');
-const DATA_FILE = path.join(ROOT, 'data', 'choreography.yaml');
+const DATA_FILE = path.join(PUBLIC_DIR, 'data', 'choreography.yaml');
 
 const MIME = {
     '.html': 'text/html; charset=utf-8',
