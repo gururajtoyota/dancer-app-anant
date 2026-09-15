@@ -17,7 +17,7 @@ numbers:
     order: 2
     song: "Yennoda Laila & Oodha Color (Lazy Boys)"
     duration: "00:52"
-    status: "planned"
+    status: "ready"
     notes: ""
     dancers:
       - "Ananthu"
@@ -53,7 +53,7 @@ numbers:
     order: 5
     song: "Kudukku Pottiya & Adipoli"
     duration: "01:30"
-    status: "planned"
+    status: "rehearsing"
     notes: ""
     dancers:
       - "Sona"
@@ -70,7 +70,7 @@ numbers:
     order: 6
     song: "Avesham"
     duration: "0:51"
-    status: "planned"
+    status: "rehearsing"
     notes: ""
     dancers:
       - "Anusha"
