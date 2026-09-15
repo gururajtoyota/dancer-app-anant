@@ -6,6 +6,7 @@ numbers:
     order: 1
     song: "Kehne Ko Jashn-e-Bahara Hai"
     duration: "01:27"
+    video: ""
     status: "planned"
     notes: ""
     dancers:
@@ -17,6 +18,7 @@ numbers:
     order: 2
     song: "Yennoda Laila & Oodha Color (Lazy Boys)"
     duration: "00:52"
+    video: ""
     status: "ready"
     notes: "This is the lazy boys dance with a comic element"
     dancers:
@@ -31,6 +33,7 @@ numbers:
     order: 3
     song: "Megham Karukarado & Selfie Pulla"
     duration: "02:25"
+    video: ""
     status: "planned"
     notes: ""
     dancers:
@@ -40,6 +43,7 @@ numbers:
     order: 4
     song: "Kattikida"
     duration: "01:25"
+    video: ""
     status: "planned"
     notes: "Two cousins to be confirmed"
     dancers:
@@ -53,6 +57,7 @@ numbers:
     order: 5
     song: "Kudukku Pottiya & Adipoli"
     duration: "01:30"
+    video: ""
     status: "rehearsing"
     notes: ""
     dancers:
@@ -70,6 +75,7 @@ numbers:
     order: 6
     song: "Avesham"
     duration: "0:51"
+    video: ""
     status: "rehearsing"
     notes: ""
     dancers:
@@ -85,6 +91,7 @@ numbers:
     order: 7
     song: "Annoda Paatu Beat"
     duration: "0:35"
+    video: ""
     status: "planned"
     notes: "Parimala and group - names to be confirmed"
     dancers:
@@ -94,6 +101,7 @@ numbers:
     order: 8
     song: "Amba Samuthiram"
     duration: "01:55"
+    video: ""
     status: "planned"
     notes: "Extra people may join for the kummis"
     dancers:

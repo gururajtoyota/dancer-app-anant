@@ -55,6 +55,32 @@ function markDirty() {
     saveBtn.dataset.dirty = 'true';
 }
 
+// Only absolute http(s) links, so a pasted value can never become javascript: or data:
+function safeUrl(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '';
+    try {
+        const url = new URL(raw);
+        return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '';
+    } catch {
+        return '';
+    }
+}
+
+function setVideoLink(row, url) {
+    const link = row.querySelector('.video-link');
+    const empty = row.querySelector('.video-empty');
+    if (url) {
+        link.href = url;
+        link.hidden = false;
+        empty.hidden = true;
+    } else {
+        link.removeAttribute('href');
+        link.hidden = true;
+        empty.hidden = false;
+    }
+}
+
 function normalize(data) {
     const show = (data && data.show) || {};
     const numbers = Array.isArray(data && data.numbers) ? data.numbers : [];
@@ -68,6 +94,7 @@ function normalize(data) {
             order: Number(n.order) || i + 1,
             song: n.song || '',
             duration: n.duration || '',
+            video: safeUrl(n.video),
             status: ['planned', 'rehearsing', 'ready'].includes(n.status) ? n.status : 'planned',
             notes: n.notes || '',
             dancers: (Array.isArray(n.dancers) ? n.dancers : []).filter(Boolean),
@@ -157,8 +184,10 @@ function buildRow(number, position) {
     $('.notes-input').value = number.notes;
     $('.duration-input').value = number.duration;
     $('.status-select').value = number.status;
+    $('.video-input').value = number.video;
+    setVideoLink(row, number.video);
 
-    ['.song-input', '.notes-input', '.duration-input'].forEach((sel) => {
+    ['.song-input', '.notes-input', '.duration-input', '.video-input'].forEach((sel) => {
         $(sel).readOnly = !editing;
     });
     $('.status-select').disabled = !editing;
@@ -183,6 +212,11 @@ function buildRow(number, position) {
     $('.status-select').addEventListener('change', (e) => {
         number.status = e.target.value;
         row.dataset.status = number.status;
+        markDirty();
+    });
+    $('.video-input').addEventListener('input', (e) => {
+        number.video = safeUrl(e.target.value);
+        setVideoLink(row, number.video);
         markDirty();
     });
 
@@ -399,6 +433,7 @@ addBtn.addEventListener('click', () => {
         order: state.numbers.length + 1,
         song: '',
         duration: '',
+        video: '',
         status: 'planned',
         notes: '',
         dancers: [],

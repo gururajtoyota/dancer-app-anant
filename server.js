@@ -57,6 +57,18 @@ function readBody(req, limit = 512_000) {
 
 const str = (v, max = 400) => (v === null || v === undefined ? '' : String(v).slice(0, max));
 
+// Only absolute http(s) links, so a stored value can never become javascript: or data:
+function safeUrl(value) {
+    const raw = str(value, 500).trim();
+    if (!raw) return '';
+    try {
+        const url = new URL(raw);
+        return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '';
+    } catch {
+        return '';
+    }
+}
+
 function sanitize(payload) {
     const show = payload && typeof payload.show === 'object' && payload.show ? payload.show : {};
     const numbers = Array.isArray(payload && payload.numbers) ? payload.numbers.slice(0, 200) : [];
@@ -70,6 +82,7 @@ function sanitize(payload) {
             order: idx + 1,
             song: str(n && n.song, 200),
             duration: str(n && n.duration, 20),
+            video: safeUrl(n && n.video),
             status: ['planned', 'rehearsing', 'ready'].includes(str(n && n.status, 20)) ? n.status : 'planned',
             notes: str(n && n.notes, 500),
             dancers: (Array.isArray(n && n.dancers) ? n.dancers : [])
