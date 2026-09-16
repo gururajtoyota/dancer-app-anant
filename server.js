@@ -82,6 +82,7 @@ function sanitize(payload) {
             order: idx + 1,
             song: str(n && n.song, 200),
             duration: str(n && n.duration, 20),
+            audio: safeUrl(n && n.audio),
             video: safeUrl(n && n.video),
             status: ['planned', 'rehearsing', 'ready'].includes(str(n && n.status, 20)) ? n.status : 'planned',
             notes: str(n && n.notes, 500),

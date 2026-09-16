@@ -235,14 +235,14 @@ body.editing .dancer-input {
 .table-head,
 .row {
     display: grid;
-    grid-template-columns: 46px minmax(180px, 1.3fr) minmax(220px, 1.9fr) 84px 108px 108px minmax(110px, 0.8fr);
+    grid-template-columns: 46px minmax(160px, 1.2fr) minmax(200px, 1.8fr) 84px 108px 100px 100px minmax(100px, 0.8fr);
     gap: 12px;
     align-items: center;
 }
 
 body.editing .table-head,
 body.editing .row {
-    grid-template-columns: 46px minmax(160px, 1.2fr) minmax(200px, 1.8fr) 78px 104px 120px minmax(100px, 0.7fr) 34px;
+    grid-template-columns: 46px minmax(140px, 1fr) minmax(180px, 1.6fr) 78px 104px 120px 120px minmax(90px, 0.6fr) 34px;
 }
 
 .table-head {
@@ -388,6 +388,41 @@ body.editing select:focus {
 .video-input {
     display: none;
     font-size: 12px;
+}
+
+/* Audio */
+.audio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.audio-link:hover {
+    text-decoration: underline;
+}
+
+.audio-empty {
+    color: #c3c7d6;
+    font-size: 12px;
+}
+
+.audio-input {
+    display: none;
+    font-size: 12px;
+}
+
+body.editing .audio-link,
+body.editing .audio-empty {
+    display: none;
+}
+
+body.editing .audio-input {
+    display: block;
 }
 
 body.editing .video-link,
@@ -615,7 +650,7 @@ body.editing .chip {
             "order song song delete"
             "chips chips chips chips"
             "duration duration status status"
-            "video video video video"
+            "audio audio video video"
             "notes notes notes notes";
         gap: 8px 10px;
         padding: 14px 12px;
@@ -650,8 +685,14 @@ body.editing .chip {
         grid-area: video;
     }
 
+    .audio {
+        grid-area: audio;
+    }
+
     .video-link,
-    .video-empty {
+    .video-empty,
+    .audio-link,
+    .audio-empty {
         font-size: 14px;
     }
 

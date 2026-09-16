@@ -67,6 +67,20 @@ function safeUrl(value) {
     }
 }
 
+function setAudioLink(row, url) {
+    const link = row.querySelector('.audio-link');
+    const empty = row.querySelector('.audio-empty');
+    if (url) {
+        link.href = url;
+        link.hidden = false;
+        empty.hidden = true;
+    } else {
+        link.removeAttribute('href');
+        link.hidden = true;
+        empty.hidden = true;
+    }
+}
+
 function setVideoLink(row, url) {
     const link = row.querySelector('.video-link');
     const empty = row.querySelector('.video-empty');
@@ -77,7 +91,7 @@ function setVideoLink(row, url) {
     } else {
         link.removeAttribute('href');
         link.hidden = true;
-        empty.hidden = false;
+        empty.hidden = true;
     }
 }
 
@@ -94,6 +108,7 @@ function normalize(data) {
             order: Number(n.order) || i + 1,
             song: n.song || '',
             duration: n.duration || '',
+            audio: safeUrl(n.audio),
             video: safeUrl(n.video),
             status: ['planned', 'rehearsing', 'ready'].includes(n.status) ? n.status : 'planned',
             notes: n.notes || '',
@@ -184,10 +199,12 @@ function buildRow(number, position) {
     $('.notes-input').value = number.notes;
     $('.duration-input').value = number.duration;
     $('.status-select').value = number.status;
+    $('.audio-input').value = number.audio;
     $('.video-input').value = number.video;
+    setAudioLink(row, number.audio);
     setVideoLink(row, number.video);
 
-    ['.song-input', '.notes-input', '.duration-input', '.video-input'].forEach((sel) => {
+    ['.song-input', '.notes-input', '.duration-input', '.audio-input', '.video-input'].forEach((sel) => {
         $(sel).readOnly = !editing;
     });
     $('.status-select').disabled = !editing;
@@ -212,6 +229,11 @@ function buildRow(number, position) {
     $('.status-select').addEventListener('change', (e) => {
         number.status = e.target.value;
         row.dataset.status = number.status;
+        markDirty();
+    });
+    $('.audio-input').addEventListener('input', (e) => {
+        number.audio = safeUrl(e.target.value);
+        setAudioLink(row, number.audio);
         markDirty();
     });
     $('.video-input').addEventListener('input', (e) => {
@@ -433,6 +455,7 @@ addBtn.addEventListener('click', () => {
         order: state.numbers.length + 1,
         song: '',
         duration: '',
+        audio: '',
         video: '',
         status: 'planned',
         notes: '',
