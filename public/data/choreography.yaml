@@ -19,9 +19,8 @@ numbers:
     order: 2
     song: "Yennoda Laila & Oodha Color (Lazy Boys)"
     duration: "00:52"
-    audio: ""
-    video: ""
-    status: "ready"
+    video: "https://drive.google.com/file/d/1eEA_bY8zOd6KXk_hb63WbgJoZvfoQbR3/view?usp=sharing"
+    status: "rehearsing"
     notes: "This is the lazy boys dance with a comic element"
     dancers:
       - "Ananthu"
@@ -37,7 +36,7 @@ numbers:
     duration: "02:25"
     audio: ""
     video: ""
-    status: "planned"
+    status: "rehearsing"
     notes: ""
     dancers:
       - "Ananthu"
@@ -46,9 +45,8 @@ numbers:
     order: 4
     song: "Kattikida"
     duration: "01:25"
-    audio: ""
-    video: ""
-    status: "planned"
+    video: "https://drive.google.com/file/d/1xSs089cNFA3N079djGADKoeriXpweTm3/view?usp=sharing"
+    status: "rehearsing"
     notes: "Two cousins to be confirmed"
     dancers:
       - "Ananthu"
@@ -80,8 +78,7 @@ numbers:
     order: 6
     song: "Avesham"
     duration: "0:51"
-    audio: ""
-    video: ""
+    video: "https://www.instagram.com/reels/DcdskJsvl_4/"
     status: "rehearsing"
     notes: ""
     dancers:
@@ -97,9 +94,8 @@ numbers:
     order: 7
     song: "Annoda Paatu Beat"
     duration: "0:35"
-    audio: ""
-    video: ""
-    status: "planned"
+    video: "https://www.youtube.com/shorts/boDIJMptS1U"
+    status: "rehearsing"
     notes: "Parimala and group - names to be confirmed"
     dancers:
       - "Parimala"
