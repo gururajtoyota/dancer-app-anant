@@ -4,7 +4,7 @@ show:
 numbers:
   - id: "n1"
     order: 1
-    song: "Kehne Ko Jashn-e-Bahara Hai"
+    song: "Omana Penne"
     duration: "01:27"
     audio: ""
     video: ""
@@ -19,6 +19,7 @@ numbers:
     order: 2
     song: "Yennoda Laila & Oodha Color (Lazy Boys)"
     duration: "00:52"
+    audio: ""
     video: "https://drive.google.com/file/d/1eEA_bY8zOd6KXk_hb63WbgJoZvfoQbR3/view?usp=sharing"
     status: "rehearsing"
     notes: "This is the lazy boys dance with a comic element"
@@ -45,6 +46,7 @@ numbers:
     order: 4
     song: "Kattikida"
     duration: "01:25"
+    audio: ""
     video: "https://drive.google.com/file/d/1xSs089cNFA3N079djGADKoeriXpweTm3/view?usp=sharing"
     status: "rehearsing"
     notes: "Two cousins to be confirmed"
@@ -78,6 +80,7 @@ numbers:
     order: 6
     song: "Avesham"
     duration: "0:51"
+    audio: ""
     video: "https://www.instagram.com/reels/DcdskJsvl_4/"
     status: "rehearsing"
     notes: ""
@@ -94,6 +97,7 @@ numbers:
     order: 7
     song: "Annoda Paatu Beat"
     duration: "0:35"
+    audio: ""
     video: "https://www.youtube.com/shorts/boDIJMptS1U"
     status: "rehearsing"
     notes: "Parimala and group - names to be confirmed"
