@@ -6,8 +6,8 @@ numbers:
     order: 1
     song: "Kehne Ko Jashn-e-Bahara Hai"
     duration: "01:27"
-    audio: "https://example.com/audio.mp3"
-    video: "https://youtu.be/test123"
+    audio: ""
+    video: ""
     status: "planned"
     notes: ""
     dancers:

@@ -371,6 +371,11 @@ body.editing select:focus {
     white-space: nowrap;
 }
 
+.video-link[hidden],
+.audio-link[hidden] {
+    display: none !important;
+}
+
 .video-link::before {
     content: "▶";
     font-size: 9px;

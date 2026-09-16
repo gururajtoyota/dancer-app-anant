@@ -77,7 +77,7 @@ function setAudioLink(row, url) {
     } else {
         link.removeAttribute('href');
         link.hidden = true;
-        empty.hidden = true;
+        empty.hidden = false;
     }
 }
 
@@ -91,7 +91,7 @@ function setVideoLink(row, url) {
     } else {
         link.removeAttribute('href');
         link.hidden = true;
-        empty.hidden = true;
+        empty.hidden = false;
     }
 }
 
