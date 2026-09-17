@@ -18,7 +18,7 @@ numbers:
   - id: "n2"
     order: 2
     song: "Yennoda Laila & Oodha Color (Lazy Boys)"
-    duration: "00:52"
+    duration: "01:03"
     audio: "https://drive.google.com/file/d/1PZVtTDAhxDeT4ubuMz46YILu_QIrgYt1/view?usp=sharing"
     video: "https://drive.google.com/file/d/1eEA_bY8zOd6KXk_hb63WbgJoZvfoQbR3/view?usp=sharing"
     status: "rehearsing"
@@ -46,7 +46,7 @@ numbers:
   - id: "n4"
     order: 4
     song: "Kattikida"
-    duration: "01:25"
+    duration: "01:33"
     audio: "https://drive.google.com/file/d/1lwR5Kit6GUw8pIVxapielL_iaHn8p6Ev/view?usp=sharing"
     video: "https://drive.google.com/file/d/1xSs089cNFA3N079djGADKoeriXpweTm3/view?usp=sharing"
     status: "rehearsing"
@@ -61,7 +61,7 @@ numbers:
   - id: "n5"
     order: 5
     song: "Kudukku Pottiya & Adipoli"
-    duration: "01:30"
+    duration: "01:33"
     audio: "https://drive.google.com/file/d/1vJMYOMs-5P9ZMBcMU7Ifz5F7jTqt6xzm/view?usp=sharing"
     video: "https://drive.google.com/file/d/1gM-988Xi65G9nGQhf31CV9kvPq8ow0ME/view?usp=sharing"
     status: "rehearsing"
@@ -97,7 +97,7 @@ numbers:
   - id: "n7"
     order: 7
     song: "Annoda Paatu Beat"
-    duration: "0:35"
+    duration: "0:27"
     audio: "https://drive.google.com/file/d/1uoyjmBhUtUVHudTU5zQDZb_lV9t73KfP/view?usp=sharing"
     video: "https://www.youtube.com/shorts/boDIJMptS1U"
     status: "rehearsing"
