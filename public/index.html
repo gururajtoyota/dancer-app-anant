@@ -96,6 +96,8 @@
         <button class="btn add edit-only" id="addBtn" type="button">+ Add dance number</button>
     </main>
 
+    <datalist id="dancerOptions"></datalist>
+
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <dialog id="unlockDialog" class="dialog">
@@ -124,7 +126,7 @@
             </div>
             <div class="cell dancers">
                 <div class="chips"></div>
-                <input class="dancer-input edit-only" type="text" placeholder="+ dancer" />
+                <input class="dancer-input edit-only" type="text" placeholder="+ dancer" list="dancerOptions" />
             </div>
             <div class="cell duration">
                 <input class="duration-input" type="text" placeholder="mm:ss" readonly />

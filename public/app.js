@@ -15,6 +15,7 @@ const unlockForm = document.getElementById('unlockForm');
 const passcodeInput = document.getElementById('passcodeInput');
 const unlockError = document.getElementById('unlockError');
 const dancerFilter = document.getElementById('dancerFilter');
+const dancerOptions = document.getElementById('dancerOptions');
 const statusFilter = document.getElementById('statusFilter');
 const clearFilters = document.getElementById('clearFilters');
 const filterCount = document.getElementById('filterCount');
@@ -360,6 +361,9 @@ function renderDancerOptions() {
     dancerFilter.add(all);
     names.forEach((name) => dancerFilter.add(new Option(name, name.toLowerCase())));
     dancerFilter.value = names.some((n) => n.toLowerCase() === current) ? current : '';
+
+    dancerOptions.textContent = '';
+    names.forEach((name) => dancerOptions.appendChild(new Option(name)));
 }
 
 function applyFilters() {
