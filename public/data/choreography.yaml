@@ -1,7 +1,7 @@
 show:
   title: "Dance Showcase"
   subtitle: "Choreography Tracker"
-  theme: "TBD"
+  theme: "Theme: Proposal: Mission Im-pro-probable\n\nAnanthu promised Sushmitha a legendary squad-backed proposal, but betting on his cousins, co-brothers, and in-laws turned his grand gesture into a grand disaster! Between wrong tracks, lazy-boy poses that stayed permanently lazy, and a crew that completely abandoned ship, his dream routine went straight from epic plan to epic fail. Left high, dry, and solo in the spotlight, Ananthu had to ditch the backup, find his own beat, and pop the question unassisted. Luckily, Sushmitha said yes to the mess! They snapped straight into a sweet duet, before the very squad that flunked the proposal crashed the stage anyway to hijack the grand wedding finale.\n\nProof that the plan went completely wrong, but the partner was 100% right!"
   masterAudio: "https://raw.githubusercontent.com/gururajtoyota/dancer-app-anant/main/public/media/full-show-track.mp3"
 numbers:
   - id: "n1"
