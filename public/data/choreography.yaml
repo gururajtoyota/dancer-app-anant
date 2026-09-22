@@ -42,7 +42,7 @@ numbers:
     audio: "https://drive.google.com/file/d/1-K6KoOnBNfmyn8A4JjnluqOeq4oe0u28/view?usp=sharing"
     video: ""
     status: "rehearsing"
-    notes: "This is a long note to test wrapping behavior — it should wrap across multiple lines instead of getting cut off or scrolling horizontally, even with lots of extra descriptive text about costumes, entrance cues, and timing."
+    notes: ""
     dancers:
       - "Ananthu"
       - "Sushmitha"
