@@ -89,6 +89,24 @@ match the current sha is rejected with 409 so concurrent edits don't clobber
 each other. Any new write path must carry the `sha` through the same way
 `saveData()` does.
 
+### Full Show Track audio upload
+
+`POST /api/upload/master-audio` (passcode-gated like `/api/data`) lets the
+browser upload the show's master audio file directly into the repo instead
+of pasting a link. Client (`app.js`) reads the picked file as base64 and
+POSTs `{ filename, contentBase64 }`; server (`server.js`) validates the
+extension against `AUDIO_EXT`, caps size at `MAX_AUDIO_BYTES` (50MB), and
+writes it to `public/media/full-show-track.<ext>` — always that one
+canonical filename, so a re-upload with a different extension deletes the
+stale file instead of accumulating orphans. In GitHub-backed mode this goes
+through the same Contents API as `saveData()` (now generalized to take a
+`filePath` argument) and the response URL points at
+`raw.githubusercontent.com` (a direct, range-request-capable stream Drive
+can't offer — see above); in local mode it writes under `public/media/` and
+returns an absolute same-origin URL. Either way the endpoint only returns a
+URL — the caller still has to set `state.show.masterAudio` and hit the
+normal Save flow to persist it into the YAML, same as pasting a link would.
+
 ## Editing model
 
 - Editing is gated by a single shared passcode (`EDIT_PASSCODE` env var),

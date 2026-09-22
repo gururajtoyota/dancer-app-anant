@@ -52,8 +52,11 @@
                     full track</a>
                 <span class="master-audio-empty" id="masterAudioEmpty">No full-show audio added yet</span>
             </div>
-            <input class="master-audio-input edit-only" id="masterAudioInput" type="url" inputmode="url"
-                placeholder="https://… link to the complete show track" />
+            <label class="master-audio-upload edit-only" for="masterAudioUpload">
+                <span class="btn ghost">⬆ Upload full show track</span>
+                <input type="file" id="masterAudioUpload" accept="audio/*" hidden />
+            </label>
+            <span class="master-audio-upload-status edit-only" id="masterAudioUploadStatus"></span>
         </div>
     </section>
 

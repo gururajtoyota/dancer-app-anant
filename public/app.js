@@ -24,7 +24,8 @@ const masterAudioEmbed = document.getElementById('masterAudioEmbed');
 const masterAudioFrame = document.getElementById('masterAudioFrame');
 const masterAudioLink = document.getElementById('masterAudioLink');
 const masterAudioEmpty = document.getElementById('masterAudioEmpty');
-const masterAudioInput = document.getElementById('masterAudioInput');
+const masterAudioUpload = document.getElementById('masterAudioUpload');
+const masterAudioUploadStatus = document.getElementById('masterAudioUploadStatus');
 
 const DANCER_FILTER_KEY = 'dance-view:dancer';
 
@@ -325,7 +326,6 @@ function move(index, delta) {
 function renderShowInfo() {
     themeText.value = state.show.theme || '';
     themeText.readOnly = !editing;
-    masterAudioInput.value = state.show.masterAudio || '';
     setMasterAudio(state.show.masterAudio);
 }
 
@@ -534,11 +534,60 @@ themeText.addEventListener('input', () => {
     markDirty();
 });
 
-masterAudioInput.addEventListener('input', () => {
-    if (!editing) return;
-    state.show.masterAudio = safeUrl(masterAudioInput.value);
-    setMasterAudio(state.show.masterAudio);
-    markDirty();
+const MAX_AUDIO_BYTES = 50 * 1024 * 1024;
+
+async function fileToBase64(file) {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    let binary = '';
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+}
+
+async function uploadMasterAudio(file) {
+    if (file.size > MAX_AUDIO_BYTES) {
+        toast('Audio file is too large (max 50MB)', true);
+        return;
+    }
+    masterAudioUpload.disabled = true;
+    masterAudioUploadStatus.textContent = `Uploading ${file.name}…`;
+    try {
+        const contentBase64 = await fileToBase64(file);
+        const res = await fetch('api/upload/master-audio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Edit-Passcode': passcode },
+            body: JSON.stringify({ filename: file.name, contentBase64 }),
+        });
+        const body = await res.json().catch(() => ({}));
+
+        if (res.status === 401) {
+            setEditing(false);
+            passcode = '';
+            sessionStorage.removeItem('dance-view:passcode');
+            toast('Session expired — unlock again', true);
+            return;
+        }
+        if (!res.ok) throw new Error(body.error || 'Upload failed');
+
+        state.show.masterAudio = safeUrl(body.url);
+        setMasterAudio(state.show.masterAudio);
+        markDirty();
+        masterAudioUploadStatus.textContent = `Uploaded ${file.name} — click Save to publish`;
+        toast('Uploaded — click Save to publish');
+    } catch (err) {
+        masterAudioUploadStatus.textContent = '';
+        toast(err.message || 'Could not upload audio', true);
+    } finally {
+        masterAudioUpload.disabled = false;
+        masterAudioUpload.value = '';
+    }
+}
+
+masterAudioUpload.addEventListener('change', () => {
+    const file = masterAudioUpload.files[0];
+    if (file) uploadMasterAudio(file);
 });
 
 document.addEventListener('keydown', (e) => {

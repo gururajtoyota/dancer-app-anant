@@ -18,6 +18,17 @@ const GITHUB_REPO = process.env.GITHUB_REPO || '';
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 const USE_GITHUB = Boolean(GITHUB_TOKEN && GITHUB_REPO);
 
+const MEDIA_DIR = 'public/media';
+const AUDIO_EXT = {
+    '.mp3': 'audio/mpeg',
+    '.m4a': 'audio/mp4',
+    '.wav': 'audio/wav',
+    '.ogg': 'audio/ogg',
+    '.aac': 'audio/aac',
+    '.flac': 'audio/flac',
+};
+const MAX_AUDIO_BYTES = 50 * 1024 * 1024;
+
 const MIME = {
     '.html': 'text/html; charset=utf-8',
     '.css': 'text/css; charset=utf-8',
@@ -25,6 +36,7 @@ const MIME = {
     '.yaml': 'text/yaml; charset=utf-8',
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
+    ...AUDIO_EXT,
 };
 
 /* ---------- helpers ---------- */
@@ -121,8 +133,8 @@ function passcodeValid(req) {
 
 /* ---------- storage: GitHub or local file ---------- */
 
-async function githubRequest(method, body) {
-    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_PATH}`
+async function githubRequest(method, filePath, body) {
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${filePath}`
         + (method === 'GET' ? `?ref=${encodeURIComponent(GITHUB_BRANCH)}` : '');
     const res = await fetch(url, {
         method,
@@ -145,9 +157,28 @@ async function githubRequest(method, body) {
     return res.json();
 }
 
+async function githubGetFile(filePath) {
+    try {
+        return await githubRequest('GET', filePath);
+    } catch (err) {
+        if (err.status === 404) return null;
+        throw err;
+    }
+}
+
+async function githubListDir(dirPath) {
+    try {
+        const entries = await githubRequest('GET', dirPath);
+        return Array.isArray(entries) ? entries : [];
+    } catch (err) {
+        if (err.status === 404) return [];
+        throw err;
+    }
+}
+
 async function loadData() {
     if (USE_GITHUB) {
-        const file = await githubRequest('GET');
+        const file = await githubRequest('GET', DATA_PATH);
         const text = Buffer.from(file.content, 'base64').toString('utf8');
         return { data: sanitize(yaml.parse(text)), sha: file.sha };
     }
@@ -159,7 +190,7 @@ async function saveData(data, sha) {
     const text = yaml.dump(data);
 
     if (USE_GITHUB) {
-        const result = await githubRequest('PUT', {
+        const result = await githubRequest('PUT', DATA_PATH, {
             message: 'Update choreography from dance-view',
             content: Buffer.from(text, 'utf8').toString('base64'),
             branch: GITHUB_BRANCH,
@@ -257,6 +288,65 @@ const server = http.createServer(async (req, res) => {
                 }
                 throw err;
             }
+        }
+
+        if (urlPath === '/api/upload/master-audio' && req.method === 'POST') {
+            if (rateLimited(req, 10)) return sendJSON(res, 429, { error: 'Too many uploads — try again later' });
+            if (!passcodeValid(req)) return sendJSON(res, 401, { error: 'Wrong passcode' });
+
+            let payload;
+            try {
+                payload = JSON.parse(await readBody(req, Math.round(MAX_AUDIO_BYTES * 1.4)));
+            } catch (err) {
+                const tooLarge = err.message === 'Payload too large';
+                return sendJSON(res, tooLarge ? 413 : 400,
+                    { error: tooLarge ? 'Audio file is too large (max 50MB)' : 'Invalid request' });
+            }
+
+            const ext = path.extname(str(payload && payload.filename, 200)).toLowerCase();
+            if (!AUDIO_EXT[ext]) return sendJSON(res, 400, { error: 'Unsupported audio format' });
+
+            const contentBase64 = typeof (payload && payload.contentBase64) === 'string' ? payload.contentBase64 : '';
+            const buffer = Buffer.from(contentBase64, 'base64');
+            if (!buffer.length || buffer.length > MAX_AUDIO_BYTES) {
+                return sendJSON(res, 413, { error: 'Audio file is too large (max 50MB)' });
+            }
+
+            const filename = `full-show-track${ext}`;
+            const filePath = `${MEDIA_DIR}/${filename}`;
+
+            if (USE_GITHUB) {
+                const stale = (await githubListDir(MEDIA_DIR))
+                    .filter((entry) => entry.name.startsWith('full-show-track.') && entry.name !== filename);
+                for (const entry of stale) {
+                    await githubRequest('DELETE', `${MEDIA_DIR}/${entry.name}`, {
+                        message: 'Remove previous full show track audio',
+                        sha: entry.sha,
+                        branch: GITHUB_BRANCH,
+                    });
+                }
+                const current = await githubGetFile(filePath);
+                await githubRequest('PUT', filePath, {
+                    message: 'Upload full show track audio',
+                    content: buffer.toString('base64'),
+                    branch: GITHUB_BRANCH,
+                    sha: current ? current.sha : undefined,
+                });
+                return sendJSON(res, 200, {
+                    url: `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/${filePath}`,
+                });
+            }
+
+            const mediaDir = path.join(PUBLIC_DIR, 'media');
+            await fsp.mkdir(mediaDir, { recursive: true });
+            const existingFiles = await fsp.readdir(mediaDir).catch(() => []);
+            await Promise.all(existingFiles
+                .filter((f) => f.startsWith('full-show-track.') && f !== filename)
+                .map((f) => fsp.unlink(path.join(mediaDir, f)).catch(() => {})));
+            await fsp.writeFile(path.join(mediaDir, filename), buffer);
+
+            const proto = str(req.headers['x-forwarded-proto'], 20).split(',')[0].trim() || 'http';
+            return sendJSON(res, 200, { url: `${proto}://${req.headers.host}/media/${filename}` });
         }
 
         if (req.method === 'GET' || req.method === 'HEAD') {

@@ -277,10 +277,18 @@ body.editing .theme-textarea:focus {
     font-size: 13px;
 }
 
-.master-audio-input {
+.master-audio-upload {
     display: none;
+    align-items: center;
+    gap: 8px;
     margin-top: 10px;
-    font-size: 13px;
+    cursor: pointer;
+}
+
+.master-audio-upload-status {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
 }
 
 body.editing .master-audio-link,
@@ -288,7 +296,11 @@ body.editing .master-audio-empty {
     display: none;
 }
 
-body.editing .master-audio-input {
+body.editing .master-audio-upload {
+    display: inline-flex;
+}
+
+body.editing .master-audio-upload-status {
     display: block;
 }
 
