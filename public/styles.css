@@ -202,7 +202,8 @@ body.editing .dancer-input {
 .theme-textarea {
     width: 100%;
     min-height: 96px;
-    resize: vertical;
+    resize: none;
+    overflow: hidden;
     font: inherit;
     color: var(--text);
     background: transparent;

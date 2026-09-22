@@ -323,9 +323,15 @@ function move(index, delta) {
     render();
 }
 
+function autoGrowTextarea(el) {
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+}
+
 function renderShowInfo() {
     themeText.value = state.show.theme || '';
     themeText.readOnly = !editing;
+    autoGrowTextarea(themeText);
     setMasterAudio(state.show.masterAudio);
 }
 
@@ -531,6 +537,7 @@ addBtn.addEventListener('click', () => {
 themeText.addEventListener('input', () => {
     if (!editing) return;
     state.show.theme = themeText.value;
+    autoGrowTextarea(themeText);
     markDirty();
 });
 
@@ -593,6 +600,9 @@ masterAudioUpload.addEventListener('change', () => {
 document.addEventListener('keydown', (e) => {
     if (editing && (e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); save(); }
 });
+
+window.addEventListener('resize', () => autoGrowTextarea(themeText));
+if (document.fonts) document.fonts.ready.then(() => autoGrowTextarea(themeText));
 
 window.addEventListener('beforeunload', (e) => {
     if (dirty) { e.preventDefault(); e.returnValue = ''; }
