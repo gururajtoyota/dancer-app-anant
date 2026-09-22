@@ -301,7 +301,11 @@ function buildRow(number, position) {
     if (!editing) return row;
 
     $('.song-input').addEventListener('input', (e) => { number.song = e.target.value; markDirty(); });
-    $('.notes-input').addEventListener('input', (e) => { number.notes = e.target.value; markDirty(); });
+    $('.notes-input').addEventListener('input', (e) => {
+        number.notes = e.target.value;
+        autoGrowTextarea(e.target);
+        markDirty();
+    });
     $('.duration-input').addEventListener('input', (e) => {
         number.duration = e.target.value;
         markDirty();
@@ -378,6 +382,7 @@ function render() {
     const frag = document.createDocumentFragment();
     state.numbers.forEach((n, i) => frag.appendChild(buildRow(n, i)));
     listEl.appendChild(frag);
+    listEl.querySelectorAll('.notes-input').forEach(autoGrowTextarea);
     renderStats();
     renderDancerOptions();
     applyFilters();
@@ -647,8 +652,13 @@ document.addEventListener('keydown', (e) => {
     if (editing && (e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); save(); }
 });
 
-window.addEventListener('resize', () => autoGrowTextarea(themeText));
-if (document.fonts) document.fonts.ready.then(() => autoGrowTextarea(themeText));
+function autoGrowAll() {
+    autoGrowTextarea(themeText);
+    listEl.querySelectorAll('.notes-input').forEach(autoGrowTextarea);
+}
+
+window.addEventListener('resize', autoGrowAll);
+if (document.fonts) document.fonts.ready.then(autoGrowAll);
 
 window.addEventListener('beforeunload', (e) => {
     if (dirty) { e.preventDefault(); e.returnValue = ''; }

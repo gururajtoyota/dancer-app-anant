@@ -448,7 +448,8 @@ body.editing .row {
 
 /* Fields */
 input,
-select {
+select,
+textarea {
     width: 100%;
     font: inherit;
     color: var(--text);
@@ -459,7 +460,8 @@ select {
     transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-input:read-only {
+input:read-only,
+textarea:read-only {
     cursor: default;
 }
 
@@ -467,18 +469,21 @@ select:disabled {
     opacity: 1;
 }
 
-input::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: #b7bccb;
 }
 
 body.editing input:hover,
-body.editing select:hover {
+body.editing select:hover,
+body.editing textarea:hover {
     border-color: var(--line);
     background: #fafbfe;
 }
 
 body.editing input:focus,
-body.editing select:focus {
+body.editing select:focus,
+body.editing textarea:focus {
     outline: none;
     border-color: var(--blue);
     background: #f5f8ff;
@@ -489,7 +494,10 @@ body.editing select:focus {
 }
 
 .notes-input {
+    resize: none;
+    overflow: hidden;
     font-size: 12px;
+    line-height: 1.4;
     color: var(--muted);
 }
 

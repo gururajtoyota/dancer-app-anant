@@ -128,6 +128,24 @@ normal Save flow to persist it into the YAML, same as pasting a link would.
   ...) has an explicit `[hidden] { display: none !important; }` rule for
   exactly this reason. Add one for any new element you show/hide via the
   `hidden` attribute.
+- **Any free text that can run long (notes, theme, ...) must be a
+  `<textarea>`, never `<input type="text">`** — a single-line `<input>`
+  cannot wrap, it just truncates/scrolls. `.notes-input` (per-number notes,
+  in the row `<template>`) and `.theme-textarea` (`themeText`) are both
+  auto-growing textareas: `readonly` when not editing (same toggle pattern as
+  everything else), styled with `resize: none; overflow: hidden;`, and
+  resized via the shared `autoGrowTextarea(el)` helper in `app.js`
+  (`el.style.height = 'auto'` then `= el.scrollHeight + 'px'`). Call it in
+  three places for any new auto-growing textarea: (1) after the element is
+  attached to the real DOM and has a value — `scrollHeight` reads 0/wrong on
+  a detached node, so for per-row textareas this means *after*
+  `listEl.appendChild(frag)` in `render()`, not inside `buildRow()`; (2) on
+  its own `input` listener, so it grows as the user types; (3) in the shared
+  `autoGrowAll()` (wired to `window.resize` and `document.fonts.ready`), so
+  column-width changes or webfont loading don't leave stale heights. Also add
+  `textarea` alongside `input, select` in the shared field rules in
+  `styles.css` (width/font/border/padding/hover/focus/placeholder) — it's
+  easy to forget and the textarea silently loses all that base styling.
 
 ## Adding a new show-level or per-number field, step by step
 
