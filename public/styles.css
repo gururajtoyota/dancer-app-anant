@@ -171,6 +171,127 @@ body.editing .dancer-input {
     display: inline-block;
 }
 
+/* Show info: theme/script + full show track */
+.show-info {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+}
+
+.card-head {
+    margin-bottom: 10px;
+}
+
+.card-head h2 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.theme-textarea {
+    width: 100%;
+    min-height: 96px;
+    resize: vertical;
+    font: inherit;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 8px;
+    line-height: 1.5;
+}
+
+.theme-textarea::placeholder {
+    color: #b7bccb;
+}
+
+body.editing .theme-textarea:hover {
+    border-color: var(--line);
+    background: #fafbfe;
+}
+
+body.editing .theme-textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+    background: #f5f8ff;
+}
+
+.master-audio-player {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.master-audio-embed {
+    margin-bottom: 10px;
+}
+
+.master-audio-embed[hidden] {
+    display: none !important;
+}
+
+.master-audio-embed iframe {
+    display: block;
+    width: 100%;
+    height: 120px;
+    border: none;
+    border-radius: 8px;
+}
+
+.master-audio-view {
+    display: flex;
+    align-items: center;
+}
+
+.master-audio-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--blue);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.master-audio-link:hover {
+    text-decoration: underline;
+}
+
+.master-audio-link[hidden],
+.master-audio-empty[hidden] {
+    display: none !important;
+}
+
+.master-audio-empty {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.master-audio-input {
+    display: none;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+body.editing .master-audio-link,
+body.editing .master-audio-empty {
+    display: none;
+}
+
+body.editing .master-audio-input {
+    display: block;
+}
+
 /* Filters */
 .filters {
     display: flex;
@@ -614,6 +735,15 @@ body.editing .chip {
 @media (max-width: 900px) {
     body {
         padding: 20px 14px 72px;
+    }
+
+    .show-info {
+        grid-template-columns: 1fr;
+        margin-bottom: 16px;
+    }
+
+    .master-audio-embed iframe {
+        height: 150px;
     }
 
     .page-header {

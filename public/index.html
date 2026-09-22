@@ -30,6 +30,33 @@
         </div>
     </header>
 
+    <section class="show-info" id="showInfo">
+        <div class="card theme-card">
+            <div class="card-head">
+                <h2>Theme &amp; Script</h2>
+            </div>
+            <textarea id="themeText" class="theme-textarea"
+                placeholder="Describe the theme and script of the show — the story it tells, the order of moments, any narration…"
+                readonly></textarea>
+        </div>
+        <div class="card audio-card">
+            <div class="card-head">
+                <h2>Full Show Track</h2>
+            </div>
+            <audio id="masterAudioPlayer" class="master-audio-player" controls preload="none" hidden></audio>
+            <div id="masterAudioEmbed" class="master-audio-embed" hidden>
+                <iframe id="masterAudioFrame" title="Full show track" allow="autoplay" loading="lazy"></iframe>
+            </div>
+            <div class="master-audio-view">
+                <a class="master-audio-link" id="masterAudioLink" target="_blank" rel="noopener noreferrer">🎵 Open
+                    full track</a>
+                <span class="master-audio-empty" id="masterAudioEmpty">No full-show audio added yet</span>
+            </div>
+            <input class="master-audio-input edit-only" id="masterAudioInput" type="url" inputmode="url"
+                placeholder="https://… link to the complete show track" />
+        </div>
+    </section>
+
     <main>
         <div class="filters" id="filters">
             <label class="filter">

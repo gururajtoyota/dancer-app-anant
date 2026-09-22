@@ -1,6 +1,8 @@
 show:
   title: "Dance Showcase"
   subtitle: "Choreography Tracker"
+  theme: "TBD"
+  masterAudio: "https://drive.google.com/file/d/1dJQPITTV0olfCBF8riYZt6I6JNQBMxjU/view?usp=sharing"
 numbers:
   - id: "nmucu5jal"
     order: 1

@@ -76,6 +76,8 @@ function sanitize(payload) {
         show: {
             title: str(show.title, 120) || 'Dance Showcase',
             subtitle: str(show.subtitle, 160),
+            theme: str(show.theme, 6000),
+            masterAudio: safeUrl(show.masterAudio),
         },
         numbers: numbers.map((n, idx) => ({
             id: str(n && n.id, 60) || `n${idx + 1}`,

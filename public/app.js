@@ -1,4 +1,4 @@
-const state = { show: { title: '', subtitle: '' }, numbers: [], sha: '' };
+const state = { show: { title: '', subtitle: '', theme: '', masterAudio: '' }, numbers: [], sha: '' };
 
 const listEl = document.getElementById('list');
 const template = document.getElementById('rowTemplate');
@@ -18,6 +18,13 @@ const dancerFilter = document.getElementById('dancerFilter');
 const statusFilter = document.getElementById('statusFilter');
 const clearFilters = document.getElementById('clearFilters');
 const filterCount = document.getElementById('filterCount');
+const themeText = document.getElementById('themeText');
+const masterAudioPlayer = document.getElementById('masterAudioPlayer');
+const masterAudioEmbed = document.getElementById('masterAudioEmbed');
+const masterAudioFrame = document.getElementById('masterAudioFrame');
+const masterAudioLink = document.getElementById('masterAudioLink');
+const masterAudioEmpty = document.getElementById('masterAudioEmpty');
+const masterAudioInput = document.getElementById('masterAudioInput');
 
 const DANCER_FILTER_KEY = 'dance-view:dancer';
 
@@ -81,6 +88,44 @@ function setAudioLink(row, url) {
     }
 }
 
+// Drive's /view share links serve an HTML viewer, not a media stream, so <audio src>
+// can't play them — its own /preview endpoint embeds a working player instead.
+function driveFileId(url) {
+    const m = /^https:\/\/drive\.google\.com\/file\/d\/([^/]+)/.exec(url || '');
+    return m ? m[1] : '';
+}
+
+function setMasterAudio(url) {
+    const driveId = driveFileId(url);
+
+    if (driveId) {
+        masterAudioFrame.src = `https://drive.google.com/file/d/${driveId}/preview`;
+        masterAudioEmbed.hidden = false;
+        masterAudioPlayer.hidden = true;
+        masterAudioPlayer.removeAttribute('src');
+    } else if (url) {
+        masterAudioPlayer.src = url;
+        masterAudioPlayer.hidden = false;
+        masterAudioEmbed.hidden = true;
+        masterAudioFrame.removeAttribute('src');
+    } else {
+        masterAudioPlayer.hidden = true;
+        masterAudioPlayer.removeAttribute('src');
+        masterAudioEmbed.hidden = true;
+        masterAudioFrame.removeAttribute('src');
+    }
+
+    if (url) {
+        masterAudioLink.href = url;
+        masterAudioLink.hidden = false;
+        masterAudioEmpty.hidden = true;
+    } else {
+        masterAudioLink.removeAttribute('href');
+        masterAudioLink.hidden = true;
+        masterAudioEmpty.hidden = false;
+    }
+}
+
 function setVideoLink(row, url) {
     const link = row.querySelector('.video-link');
     const empty = row.querySelector('.video-empty');
@@ -102,6 +147,8 @@ function normalize(data) {
         show: {
             title: show.title || 'Dance Showcase',
             subtitle: show.subtitle || '',
+            theme: show.theme || '',
+            masterAudio: safeUrl(show.masterAudio),
         },
         numbers: numbers.map((n, i) => ({
             id: n.id || `n${i + 1}`,
@@ -275,10 +322,18 @@ function move(index, delta) {
     render();
 }
 
+function renderShowInfo() {
+    themeText.value = state.show.theme || '';
+    themeText.readOnly = !editing;
+    masterAudioInput.value = state.show.masterAudio || '';
+    setMasterAudio(state.show.masterAudio);
+}
+
 function render() {
     state.numbers.forEach((n, i) => { n.order = i + 1; });
     titleEl.textContent = state.show.title;
     subtitleEl.textContent = state.show.subtitle;
+    renderShowInfo();
 
     listEl.textContent = '';
     const frag = document.createDocumentFragment();
@@ -471,6 +526,19 @@ addBtn.addEventListener('click', () => {
     el.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') { e.preventDefault(); el.blur(); }
     });
+});
+
+themeText.addEventListener('input', () => {
+    if (!editing) return;
+    state.show.theme = themeText.value;
+    markDirty();
+});
+
+masterAudioInput.addEventListener('input', () => {
+    if (!editing) return;
+    state.show.masterAudio = safeUrl(masterAudioInput.value);
+    setMasterAudio(state.show.masterAudio);
+    markDirty();
 });
 
 document.addEventListener('keydown', (e) => {
