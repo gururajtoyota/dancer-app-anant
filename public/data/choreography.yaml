@@ -4,12 +4,12 @@ show:
 numbers:
   - id: "n1"
     order: 1
-    song: "Omana Penne"
-    duration: "01:51"
+    song: "Mulumathy Avalathu"
+    duration: "01:45"
     audio: "https://drive.google.com/file/d/1BYPSkEcDkl85PhltEs6GTqP9BflgE_KT/view?usp=drive_link"
     video: ""
     status: "planned"
-    notes: ""
+    notes: "Bride and Groom entrance"
     dancers:
       - "Mahathi"
       - "Manya"
