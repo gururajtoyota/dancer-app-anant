@@ -720,6 +720,39 @@ body.editing .chip {
     padding: 0;
 }
 
+/* Audio dialog */
+.audio-dialog {
+    width: min(480px, calc(100vw - 32px));
+}
+
+.audio-dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.audio-dialog-head h2 {
+    margin: 0;
+}
+
+.audio-dialog-player {
+    width: 100%;
+}
+
+.audio-dialog-embed[hidden] {
+    display: none !important;
+}
+
+.audio-dialog-embed iframe {
+    display: block;
+    width: 100%;
+    height: 120px;
+    border: none;
+    border-radius: 8px;
+}
+
 /* Toast */
 .toast {
     position: fixed;
@@ -756,6 +789,10 @@ body.editing .chip {
     }
 
     .master-audio-embed iframe {
+        height: 150px;
+    }
+
+    .audio-dialog-embed iframe {
         height: 150px;
     }
 

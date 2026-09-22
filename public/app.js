@@ -27,6 +27,12 @@ const masterAudioLink = document.getElementById('masterAudioLink');
 const masterAudioEmpty = document.getElementById('masterAudioEmpty');
 const masterAudioUpload = document.getElementById('masterAudioUpload');
 const masterAudioUploadStatus = document.getElementById('masterAudioUploadStatus');
+const audioDialog = document.getElementById('audioDialog');
+const audioDialogTitle = document.getElementById('audioDialogTitle');
+const audioDialogPlayer = document.getElementById('audioDialogPlayer');
+const audioDialogEmbed = document.getElementById('audioDialogEmbed');
+const audioDialogFrame = document.getElementById('audioDialogFrame');
+const audioDialogClose = document.getElementById('audioDialogClose');
 
 const DANCER_FILTER_KEY = 'dance-view:dancer';
 
@@ -95,6 +101,25 @@ function setAudioLink(row, url) {
 function driveFileId(url) {
     const m = /^https:\/\/drive\.google\.com\/file\/d\/([^/]+)/.exec(url || '');
     return m ? m[1] : '';
+}
+
+function openAudioDialog(url, title) {
+    const driveId = driveFileId(url);
+    audioDialogTitle.textContent = title || 'Audio';
+
+    if (driveId) {
+        audioDialogFrame.src = `https://drive.google.com/file/d/${driveId}/preview`;
+        audioDialogEmbed.hidden = false;
+        audioDialogPlayer.hidden = true;
+        audioDialogPlayer.removeAttribute('src');
+    } else {
+        audioDialogPlayer.src = url;
+        audioDialogPlayer.hidden = false;
+        audioDialogEmbed.hidden = true;
+        audioDialogFrame.removeAttribute('src');
+    }
+
+    audioDialog.showModal();
 }
 
 function setMasterAudio(url) {
@@ -252,6 +277,13 @@ function buildRow(number, position) {
     $('.video-input').value = number.video;
     setAudioLink(row, number.audio);
     setVideoLink(row, number.video);
+
+    $('.audio-link').addEventListener('click', (e) => {
+        if (!number.audio) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        openAudioDialog(number.audio, number.song || 'Audio');
+    });
 
     ['.song-input', '.notes-input', '.duration-input', '.audio-input', '.video-input'].forEach((sel) => {
         $(sel).readOnly = !editing;
@@ -489,6 +521,16 @@ unlockBtn.addEventListener('click', () => {
 });
 
 document.getElementById('unlockCancel').addEventListener('click', () => dialog.close());
+
+audioDialogClose.addEventListener('click', () => audioDialog.close());
+audioDialog.addEventListener('click', (e) => {
+    if (e.target === audioDialog) audioDialog.close();
+});
+audioDialog.addEventListener('close', () => {
+    audioDialogPlayer.pause();
+    audioDialogPlayer.removeAttribute('src');
+    audioDialogFrame.removeAttribute('src');
+});
 
 unlockForm.addEventListener('submit', async (e) => {
     e.preventDefault();

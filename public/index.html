@@ -112,6 +112,17 @@
         </form>
     </dialog>
 
+    <dialog id="audioDialog" class="dialog audio-dialog">
+        <div class="audio-dialog-head">
+            <h2 id="audioDialogTitle">Audio</h2>
+            <button type="button" class="icon-btn" id="audioDialogClose" aria-label="Close">✕</button>
+        </div>
+        <audio id="audioDialogPlayer" class="audio-dialog-player" controls autoplay hidden></audio>
+        <div id="audioDialogEmbed" class="audio-dialog-embed" hidden>
+            <iframe id="audioDialogFrame" title="Audio player" allow="autoplay" loading="lazy"></iframe>
+        </div>
+    </dialog>
+
     <template id="rowTemplate">
         <article class="row">
             <div class="cell order">
